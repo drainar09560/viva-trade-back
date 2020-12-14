@@ -26,7 +26,7 @@ module.exports.delete = async (req, res) => {
     try{
         await Types.remove({_id: req.query.id});
         await Products.remove({type: req.query.id})
-        res.status(200).json({message: 'Тип был удалён'})
+        res.status(200).json({message: 'Тип был удалён.'})
     } catch(e) {
         errorHandler(res, e)
     }

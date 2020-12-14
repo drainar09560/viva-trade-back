@@ -24,8 +24,10 @@ router.post('/admin/manuf', manufController.create)
 router.delete('/admin/manuf', manufController.delete)
 router.patch('/admin/manuf', manufController.update)
 
+router.get('/admin/products', storeController.getByParams)
 router.post('/admin/products', upload.single('image'), storeController.create)
 router.patch('/admin/products', upload.single('image'), storeController.update)
+router.delete('/admin/products', upload.single('image'), storeController.delete)
 
 router.get('/', homeController.getFavorite)
 

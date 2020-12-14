@@ -26,7 +26,7 @@ module.exports.delete = async (req, res) => {
     try{
         await Manufactured.remove({_id: req.query.id});
         await Products.remove({manufacture: req.query.id})
-        res.status(200).json({message: 'Производитель был удалён'})
+        res.status(200).json({message: 'Производитель был удалён.'})
     } catch(e) {
         errorHandler(res, e)
     }

@@ -2,12 +2,11 @@ const Products = require('../models/Products')
 const errorHandler = require('../utils/errorHandler')
 const normalize = require('../utils/normalize')
 
-module.exports.search = async (req, res) => {
-    res.json({message: 'search'})
-}
 module.exports.getByParams = async (req, res) => {
+    console.log(req.query)
+
     try{
-        const data = await Products.find({type: req.query.type, manufactured: req.query.manuf})
+        const data = await Products.find(req.query)
         res.status(200).json(data)
     } catch (e) {
         errorHandler(res, e)
@@ -31,6 +30,7 @@ module.exports.create = async (req, res) => {
     }
 }
 module.exports.update = async (req, res) => {
+    console.log(req.file)
     const updated = {
         manufacture: req.body.manuf,
         title: normalize(req.body.title),
@@ -49,6 +49,14 @@ module.exports.update = async (req, res) => {
             {$set: updated},
             {new: true})
         res.status(200).json(product)
+    } catch (e) {
+        errorHandler(res, e)
+    }
+}
+module.exports.delete = async (req, res) => {
+    try{
+        await Products.remove({_id: req.query.id})
+        res.status(200).json({message: 'Товар был удалён.'})
     } catch (e) {
         errorHandler(res, e)
     }
