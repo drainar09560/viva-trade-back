@@ -1,10 +1,10 @@
 const Products = require('../models/Products')
+const Types = require('../models/Types')
+const Manufactured = require('../models/Manufactured')
 const errorHandler = require('../utils/errorHandler')
 const normalize = require('../utils/normalize')
 
 module.exports.getByParams = async (req, res) => {
-    console.log(req.query)
-
     try{
         const data = await Products.find(req.query)
         res.status(200).json(data)
