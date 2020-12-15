@@ -6,8 +6,10 @@ const normalize = require('../utils/normalize')
 
 module.exports.getByParams = async (req, res) => {
     try{
-        const data = await Products.find(req.query)
-        res.status(200).json(data)
+        const types = await Types.find()
+        const manuf = await Manufactured.find()
+        const products = await Products.find(req.query)
+        res.status(200).json({types, manuf, products})
     } catch (e) {
         errorHandler(res, e)
     }

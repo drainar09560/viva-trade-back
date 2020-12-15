@@ -1,10 +1,12 @@
 const Product = require('../models/Products')
+const Gallery = require('../models/Gallery')
 const errorHandler = require('../utils/errorHandler')
 
 module.exports.getFavorite = async (req, res) => {
     try{
-        const data = await Product.find({favorite: true});
-        res.status(200).json(data)
+        const products = await Product.find({favorite: true});
+        const gallery = await Gallery.find();
+        res.status(200).json({products, gallery})
     } catch (e) {
         errorHandler(res, e)
     }
