@@ -1,4 +1,5 @@
 const Products = require('../models/Products')
+const Gallery = require('../models/Gallery')
 const Types = require('../models/Types')
 const Manufactured = require('../models/Manufactured')
 const errorHandler = require('../utils/errorHandler')
@@ -7,9 +8,32 @@ const normalize = require('../utils/normalize')
 module.exports.getByParams = async (req, res) => {
     try{
         const types = await Types.find()
-        const manuf = await Manufactured.find()
-        const products = await Products.find(req.query)
-        res.status(200).json({types, manuf, products})
+        const manufactured = await Manufactured.find()
+
+        if(req.body.favorite) {
+            const query = {}
+            if (req.body.type) {
+                query.type = req.body.type
+            }
+            const gallery = await Gallery.find(query).limit(12)
+            const products = await Products.find({favorite: true}).limit(12)
+        
+            res.status(200).json({filters: {types, manufactured}, products, gallery})
+        } else{
+            const query = {}
+            if (req.body.manufactured) {
+                query.manufacture = { $in : req.body.manufactured}
+            }
+            if (req.body.type) {
+                query.type = req.body.type
+            }
+
+            const {page=1, limit=12} = req.body
+            const count = await Products.countDocuments(query)
+            const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
+            res.status(200).json({filters: {types, manufactured}, products, count})
+        }
+        
     } catch (e) {
         errorHandler(res, e)
     }

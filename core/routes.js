@@ -5,7 +5,6 @@ const upload = require('../middleware/upload')
 
 const storeController = require('../controllers/store.controller')
 
-const homeController = require('../controllers/home.controller')
 const authController = require('../controllers/auth.controller')
 const typesController = require('../controllers/types.controller')
 const manufController = require('../controllers/manufactured.controller')
@@ -34,8 +33,6 @@ router.post('/admin/products', upload.single('image'), storeController.create)
 router.patch('/admin/products', upload.single('image'), storeController.update)
 router.delete('/admin/products', upload.single('image'), storeController.delete)
 
-router.get('/', homeController.getFavorite)
-
-router.get('/product', storeController.getByParams)
+router.post('/store', storeController.getByParams)
 
 module.exports = router
