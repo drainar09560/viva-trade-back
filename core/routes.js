@@ -14,21 +14,18 @@ const galleryController = require('../controllers/gallery.controller')
 router.post('/admin/auth', authController.auth)
 router.post('/admin/registration', authController.registration)
 
-router.get('/admin/gallery', galleryController.getAll)
 router.post('/admin/gallery', upload.single('image'), galleryController.create)
 router.delete('/admin/gallery', upload.single('image'), galleryController.delete)
 
-router.get('/admin/types', typesController.getAll)
 router.post('/admin/types', typesController.create)
 router.delete('/admin/types', typesController.delete)
 router.patch('/admin/types', typesController.update)
 
-router.get('/admin/manuf', manufController.getAll)
 router.post('/admin/manuf', manufController.create)
 router.delete('/admin/manuf', manufController.delete)
 router.patch('/admin/manuf', manufController.update)
 
-router.get('/admin/products', storeController.getByParams)
+router.get('/admin/', storeController.getDataByAdmin)
 router.post('/admin/products', upload.single('image'), storeController.create)
 router.patch('/admin/products', upload.single('image'), storeController.update)
 router.delete('/admin/products', upload.single('image'), storeController.delete)

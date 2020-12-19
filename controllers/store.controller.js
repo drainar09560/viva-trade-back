@@ -28,7 +28,7 @@ module.exports.getByParams = async (req, res) => {
                 query.type = req.body.type
             }
 
-            const {page=1, limit=12} = req.body
+            const {page=1, limit=16} = req.body
             const count = await Products.countDocuments(query)
             const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
             res.status(200).json({filters: {types, manufactured}, products, count})
@@ -83,6 +83,27 @@ module.exports.delete = async (req, res) => {
     try{
         await Products.remove({_id: req.query.id})
         res.status(200).json({message: 'Товар был удалён.'})
+    } catch (e) {
+        errorHandler(res, e)
+    }
+}
+module.exports.getDataByAdmin = async (res, req) => {
+    try{
+        const query = {}
+            if (req.body.manufactured) {
+                query.manufacture = { $in : req.body.manufactured}
+            }
+            if (req.body.type) {
+                query.type = req.body.type
+            }
+
+            const {page=1, limit=16} = req.body
+            const types = await Types.find()
+            const manufactured = await Manufactured.find()
+            const gallery = await Gallery.find();
+            const count = await Products.countDocuments(query)
+            const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
+            res.status(200).json({filters: {types, manufactured}, products, count, gallery})
     } catch (e) {
         errorHandler(res, e)
     }
