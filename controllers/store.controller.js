@@ -31,7 +31,7 @@ module.exports.getByParams = async (req, res) => {
             const {page=1, limit=16} = req.body
             const count = await Products.countDocuments(query)
             const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
-            res.status(200).json({filters: {types, manufactured}, products, count})
+            res.status(200).json({filters: {types, manufactured}, products: {items: products, count}})
         }
         
     } catch (e) {
@@ -98,12 +98,12 @@ module.exports.getDataByAdmin = async (res, req) => {
             }
 
             const {page=1, limit=16} = req.body
+
             const types = await Types.find()
             const manufactured = await Manufactured.find()
-            const gallery = await Gallery.find();
             const count = await Products.countDocuments(query)
             const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
-            res.status(200).json({filters: {types, manufactured}, products, count, gallery})
+            res.status(200).json({filters: {types, manufactured}, products: {items: products, count}})
     } catch (e) {
         errorHandler(res, e)
     }

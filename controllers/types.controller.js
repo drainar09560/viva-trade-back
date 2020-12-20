@@ -3,21 +3,13 @@ const Products = require('../models/Products')
 const errorHandler = require('../utils/errorHandler')
 const normalize = require('../utils/normalize')
 
-module.exports.getAll = async (req, res) => {
-    try{
-        const data = await Types.find();
-        res.status(200).json(data)
-    } catch(e) {
-        errorHandler(res, e)
-    }
-}
 module.exports.create = async (req, res) => {
     try{
         const type = new Types({
             title: normalize(req.body.title)
         });
         await type.save()
-        res.status(201).json(type)
+        res.status(201).json({message: 'Тип был добавлен.'})
     } catch(e) {
         errorHandler(res, e)
     }
@@ -38,7 +30,7 @@ module.exports.update = async (req, res) => {
             {$set: req.body},
             {new: true}
         )
-        res.status(200).json(type)
+        res.status(200).json({message: 'Тип был изменён.'})
     } catch(e) {
         errorHandler(res, e)
     }

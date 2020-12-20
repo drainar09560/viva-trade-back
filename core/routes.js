@@ -14,6 +14,7 @@ const galleryController = require('../controllers/gallery.controller')
 router.post('/admin/auth', authController.auth)
 router.post('/admin/registration', authController.registration)
 
+router.get('/admin/gallery', galleryController.getAll)
 router.post('/admin/gallery', upload.single('image'), galleryController.create)
 router.delete('/admin/gallery', upload.single('image'), galleryController.delete)
 
