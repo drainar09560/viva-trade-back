@@ -18,7 +18,7 @@ module.exports.getByParams = async (req, res) => {
             const gallery = await Gallery.find(query).limit(12)
             const products = await Products.find({favorite: true}).limit(12)
         
-            res.status(200).json({filters: {types, manufactured}, products, gallery})
+            res.status(200).json({filters: {types, manufactured}, products: {items: products}, gallery})
         } else{
             const query = {}
             if (req.body.manufactured) {
@@ -40,7 +40,7 @@ module.exports.getByParams = async (req, res) => {
 }
 module.exports.create = async (req, res) => {
     const product = new Products({
-        manufacture: req.body.manuf,
+        manufacture: req.body.manufacture,
         title: normalize(req.body.title),
         type: req.body.type,
         description: normalize(req.body.description),
@@ -56,25 +56,16 @@ module.exports.create = async (req, res) => {
     }
 }
 module.exports.update = async (req, res) => {
-    console.log(req.file)
-    const updated = {
-        manufacture: req.body.manuf,
-        title: normalize(req.body.title),
-        type: req.body.type,
-        description: normalize(req.body.description),
-        price: req.body.price,
-        favorite: req.body.favorite
-    };
+    const updated = {...req.body};
     if(req.file) {
         updated.imageUrl = req.file.path
     }
-
     try{
         const product = await Products.findOneAndUpdate(
             {_id: req.query.id},
             {$set: updated},
             {new: true})
-        res.status(200).json(product)
+        res.status(200).json({massage: 'Товар был обновлён.'})
     } catch (e) {
         errorHandler(res, e)
     }

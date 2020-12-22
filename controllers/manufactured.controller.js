@@ -25,7 +25,7 @@ module.exports.delete = async (req, res) => {
 }
 module.exports.update = async (req, res) => {
     try{
-        const manuf = await Manufactured.findOneAndUpdate(
+        await Manufactured.findOneAndUpdate(
             {_id: req.query.id},
             {$set: req.body},
             {new: true}
