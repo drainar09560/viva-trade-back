@@ -16,9 +16,10 @@ module.exports.getByParams = async (req, res) => {
                 query.type = req.body.type
             }
             const gallery = await Gallery.find(query).limit(12)
+            const count = await Products.countDocuments(query)
             const products = await Products.find({favorite: true}).limit(12)
         
-            res.status(200).json({filters: {types, manufactured}, products: {items: products}, gallery})
+            res.status(200).json({filters: {types, manufactured}, products: {items: products, count}, gallery})
         } else{
             const query = {}
             if (req.body.manufactured) {
