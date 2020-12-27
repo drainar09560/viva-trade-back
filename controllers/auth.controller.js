@@ -15,7 +15,7 @@ module.exports.auth = async (req, res) => {
                 id: candidate._id
             }, process.env.JWT, {expiresIn: 3600})
 
-            res.status(200).json(token)
+            res.status(200).json({token: `Bearer ${token}`})
         } else {
             res.status(404).json('Не верный логин или пароль')
         }

@@ -91,11 +91,12 @@ module.exports.getDataByAdmin = async (res, req) => {
 
             const {page=1, limit=16} = req.body
 
+            const gallery = await Gallery.find()
             const types = await Types.find()
             const manufactured = await Manufactured.find()
             const count = await Products.countDocuments(query)
             const products = await Products.find(query).limit(limit*1).skip((page-1) * limit);
-            res.status(200).json({filters: {types, manufactured}, products: {items: products, count}})
+            res.status(200).json({filters: {types, manufactured}, gallery, products: {items: products, count}})
     } catch (e) {
         errorHandler(res, e)
     }
