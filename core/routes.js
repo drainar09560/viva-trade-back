@@ -2,12 +2,11 @@ const { Router } = require('express')
 const router = Router()
 const passport = require('passport')
 const upload = require('../middleware/upload')
+const homeController = require('../controllers/home.controller')
 
-const storeController = require('../controllers/store.controller')
+const serviceController = require('../controllers/service.controller')
 
 const authController = require('../controllers/auth.controller')
-const typesController = require('../controllers/types.controller')
-const manufController = require('../controllers/manufactured.controller')
 const galleryController = require('../controllers/gallery.controller')
 
 
@@ -18,19 +17,13 @@ router.get('/admin/gallery', galleryController.getAll)
 router.post('/admin/gallery', upload.single('imageUrl'), galleryController.create)
 router.delete('/admin/gallery', galleryController.delete)
 
-router.post('/admin/types', typesController.create)
-router.delete('/admin/types', typesController.delete)
-router.patch('/admin/types', typesController.update)
 
-router.post('/admin/manuf', manufController.create)
-router.delete('/admin/manuf', manufController.delete)
-router.patch('/admin/manuf', manufController.update)
+router.get('/admin/services', serviceController.getAll)
+router.post('/admin/services', upload.single('imageUrl'), serviceController.create)
+router.patch('/admin/services', upload.single('imageUrl'), serviceController.update)
+router.delete('/admin/services', serviceController.delete)
 
-router.post('/admin/', storeController.getDataByAdmin)
-router.post('/admin/products', upload.single('imageUrl'), storeController.create)
-router.patch('/admin/products', upload.single('imageUrl'), storeController.update)
-router.delete('/admin/products', storeController.delete)
-
-router.post('/store', storeController.getByParams)
+router.get('/home', homeController.getAll)
 
 module.exports = router
+

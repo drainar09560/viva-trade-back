@@ -1,4 +1,4 @@
-const bcrypt = require('bcryptjs');
+const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
 const Users = require('../models/Users')
@@ -24,11 +24,13 @@ module.exports.auth = async (req, res) => {
         res.status(404).json('Не верный логин или пароль')
     }
 }
+// TODO
 module.exports.registration = async (req, res) => {
     const { login, password } = req.body;
-    const salt = bcrypt.genSaltSync(10);
+    const salt = await bcrypt.genSalt(10)
 
-    const user = new Users({login, password: bcrypt.hashSync(password, salt)})
+    const hash = await bcrypt.hash(password, salt)
+    const user = new Users({login, password: hash})
 
     try {
         await user.save();

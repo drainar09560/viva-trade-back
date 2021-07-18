@@ -3,7 +3,7 @@ const errorHandler = require('../utils/errorHandler')
 
 module.exports.getAll = async (req, res) => {
     try{
-        const images = await Gallery.find().sort({type: 1})
+        const images = await Gallery.find()
         res.status(200).json(images)
     } catch (e) {
         errorHandler(res, e)
@@ -13,7 +13,7 @@ module.exports.create = async (req, res) => {
     try{
         const image = new Gallery({
             imageUrl: req.file ? req.file.path : '',
-            type: req.body.type
+            description: req.body.description
         })
 
         await image.save()
